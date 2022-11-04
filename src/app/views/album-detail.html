@@ -1,0 +1,55 @@
+<div *ngIf="album" class="album-box pt-3">
+	<div class="" id="album-head-card">
+		<div class="image">
+			<img src="{{url + 'get-image-album/' + album.image}}" *ngIf="album.image && album.image !='null' " />	
+		</div>
+		<div class="data">
+			<h1>{{album.title}}</h1>
+			<h3>{{album.artist.name}}</h3>
+			<p>{{album.year}}</p>
+			<p class="description">{{album.description}}</p>
+			<a *ngIf="identity.role == 'ROLE_ADMIN' " [routerLink]="['/crear-tema', album._id]" class="btn btn-secondary">
+				Añadir canción
+			</a>
+
+		</div>
+	</div>
+	<div class="clearfix"></div>
+	<div class="gallery-songs" *ngIf="songs">
+		<ul id="songs-list">
+			<li *ngFor="let song of songs" class="song-item">
+				 <!-- <div class="song-file">
+					<audio controls>
+						<source src="{{ url + 'get-file-song/' + song.file }}" type="audio/mpeg" />
+							El navegador web no soporta la reproducción del audio		
+					</audio>
+				</div> -->
+				<div class="song-title">
+						<a class="btn btn-dark" (click)="startPlayer(song)">
+							<i class="fas fa-play" aria-hidden="true"></i>
+						</a> 
+						{{song.number + '. ' + song.name + ' - ' + song.duration}}
+						<div class="buttons-song" *ngIf="identity.role == 'ROLE_ADMIN' ">
+							<a [routerLink]="['/editar-tema', song._id]" class="btn btn-sm btn-info btn-spotymusic">
+								<span aria-hidden="true" class="fas fa-edit"></span> Editar 
+							</a>
+							<a (click)="onDeleteConfirm(song._id)" class="btn btn-sm btn-danger btn-spotymusic" >
+								<span aria-hidden="true" class="fas fa-trash"></span> Borrar
+							</a>
+						</div>
+						<div class="seguro seguro-song" *ngIf="confirmado == song._id">
+							<a (click)="onDeleteSong(song._id)" class="btn btn-sm btn-success btn-spotymusic">
+								<span aria-hidden="true" class="fas fa-check-circle"></span> Eliminar
+							</a>
+							<a (click)="onCancelSong()" class="btn btn-sm btn-danger btn-spotymusic">
+								<span aria-hidden="true" class="fas fa-times-circle"></span> Cancelar
+							</a>
+						</div>
+					<div class="clearfix"></div> 		      	
+				</div>
+				
+			</li>
+		</ul>
+	</div>
+	
+</div>

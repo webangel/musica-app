@@ -1,0 +1,44 @@
+<div class="head-page" *ngIf="identity">
+	<h1>{{titulo}}</h1>
+	<a [routerLink]="['/crear-artista']" *ngIf='identity && identity.role == "ROLE_ADMIN"' class="btn btn-secondary btn-spotify-add">
+		Añadir artista
+	</a>
+</div>
+<div class="col-sm-12">
+	<ul class="row pagination justify-content-end">
+		<li><a class="btn btn-dark" [routerLink]="['/artistas', prev_page]" >&laquo;</a></li>
+		<li><a class="btn btn-dark" [routerLink]="['/artistas', next_page]" >&raquo;</a></li>
+	</ul>
+</div>
+<div class="clearfix"></div>
+<div class="col-lg-12">
+	<ul class="row artists-list" *ngIf="identity">
+		<li *ngFor="let artist of artists" class="col-lg-3 col-md-6 col-sm-12 artist-item">
+			<div class="artist-image">
+				<img src="{{url + 'get-image-artist/' + artist.image}}" />	
+			</div>
+			<div class="artist-name">
+				<a [routerLink]="['/artista', artist._id]" >
+					{{artist.name}}		
+				</a>
+				<div class="buttons" *ngIf="identity.role == 'ROLE_ADMIN' ">
+					<a [routerLink]="['/editar-artista', artist._id]" class="btn btn-sm btn-info btn-spotymusic">
+						<span aria-hidden="true" class="fas fa-edit"></span> Editar
+					</a>
+					<a (click)="onDeleteConfirm(artist._id)" class="btn btn-sm btn-danger btn-spotymusic" >
+					<span aria-hidden="true" class="fas fa-trash"></span> Borrar
+					</a>
+				</div>
+		        <div class="seguro" *ngIf="confirmado == artist._id">
+					<a (click)="onDeleteArtist(artist._id)" class="btn btn-sm btn-success btn-spotymusic">
+						<span aria-hidden="true" class="fas fa-check-circle"></span> Eliminar
+					</a>
+					<a (click)="onCancelArtist()" class="btn btn-sm btn-danger btn-spotymusic">
+					<span aria-hidden="true" class="fas fa-times-circle"></span> Cancelar
+					</a>
+				</div>		
+			</div>
+			
+		</li>
+	</ul>
+</div>
